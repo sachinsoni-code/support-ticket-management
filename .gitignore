@@ -1,0 +1,40 @@
+# Java / Spring Boot
+target/
+build/
+*.class
+*.jar
+*.war
+*.log
+hs_err_pid*
+
+# Gradle
+.gradle/
+
+# Node / React / Next.js
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment and local config
+.env
+.env.*
+!.env.example
+application-local.properties
+application-local.yml
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.cursor/
+
+# OS
+.DS_Store
+Thumbs.db
