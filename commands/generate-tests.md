@@ -1,5 +1,5 @@
 /*
-Review the Support Ticket Management System codebase and existing test suite in reference to the following specification and rules documents:
+Analyze the Support Ticket Management System codebase and its test suite to identify any gaps in test coverage based on the following documents:
 
 - spec/requirements.md
 - spec/architecture.md
@@ -9,37 +9,36 @@ Review the Support Ticket Management System codebase and existing test suite in 
 - rules/java-springboot.md
 - rules/testing.md
 
-Your task is to generate only production-ready tests for behaviors that are missing or insufficiently tested, strictly following the project's testing conventions and boundaries.
+You must generate production-ready tests only for behaviors specified in the documentation above that are missing or inadequately covered, adhering to all project testing rules and conventions.
 
-Instructions:
+Process:
 
-1. Thoroughly inspect the current implementation and all test files to determine which behaviors—defined in the specifications—are fully, partially, or not at all covered by tests.
-2. For any behavior that is missing or insufficiently tested, generate new tests using established testing patterns and Spring Boot conventions present in the codebase.
-3. The following behaviors must be confirmed as covered; if any are missing or insufficient, generate additional tests for:
-   - Ticket creation (valid and invalid inputs, required and optional fields, all validation rules).
-   - Ticket update (all fields present, partial updates must be rejected per spec, with proper validation coverage).
-   - Assignee logic (assign, clear, reject blank/invalid/too long/null values).
-   - Comment creation (valid, blank, overly long, proper ticket association).
-   - Search and status filtering.
-   - Exact five allowed status transitions (no others are valid):
+1. Examine all implementation and test files to determine which specification-driven behaviors are completely, partially, or not at all covered by existing tests.
+2. For each behavior lacking sufficient coverage, write new tests consistent with the project's established Spring Boot testing patterns.
+3. Confirm that tests exist—and add any missing or incomplete coverage—for at least the following areas:
+   - Ticket creation: All required and optional fields, handling valid/invalid inputs, and all validation rules.
+   - Ticket updating: Enforce that all fields must be present; partial updates are rejected. Validate all update-related rules.
+   - Assignee: Assign, clear, reject blank, null, and overly long assignee values per requirements.
+   - Comment creation: Test valid, blank, and overly long comment bodies, and correct comment-to-ticket association.
+   - Search and status filtering functionality.
+   - State transitions: Only these five must succeed—
      - OPEN → IN_PROGRESS
      - OPEN → CANCELLED
      - IN_PROGRESS → RESOLVED
      - IN_PROGRESS → CANCELLED
      - RESOLVED → CLOSED
-   - All other, reverse, skip, same-status, and terminal-state transitions must be tested to ensure:
-     - The correct error code (409 INVALID_STATUS_TRANSITION) and message are produced.
-     - No change is made to ticket state or any other ticket field.
-   - All required API-level request validations, proper HTTP status codes, error response structure, and field-level errors as outlined in the API contract and spec.
-   - Ticket, assignee, and comment persistence and relationships as specified.
-4. Do NOT generate or suggest tests for any out-of-scope features (including but not limited to: authentication, deletion, notifications, dashboards, or pagination).
-5. Do NOT modify production code or any spec/rules files.
-6. Name test classes and methods clearly, indicating scenario and expected results, and avoid duplicating existing coverage.
-7. Use only the existing Spring Boot test infrastructure, annotations, and configurations.
-8. After generating required tests, provide a concise summary including:
-   - Exactly which new tests were added.
-   - Which scenarios or specification requirements they cover.
-   - Whether any spec ambiguities or contradictions were encountered that prevent test coverage or require developer clarification.
+   - All other, reverse, skip, same-status, or terminal status transitions: Test that they are rejected with HTTP 409 and an INVALID_STATUS_TRANSITION error with no ticket modifications.
+   - Full API layer validation: HTTP status codes, required/extra fields, response and error payload structure, including all required fields as per the API contract.
+   - Persistence and relationships for tickets, assignees, and comments.
 
-Output only production-ready test code for missing/insufficient behaviors and the required summary, as described above.
+4. Do NOT generate or suggest tests for out-of-scope features such as authentication, deletion, notifications, dashboards, or pagination.
+5. Do NOT modify any production (non-test) code or any documentation/spec/rules files.
+6. Name all new test classes and methods descriptively to clearly communicate the scenario and expected outcome; do not duplicate scenarios already covered.
+7. Use only the current Spring Boot testing tools, annotations, configurations, and conventions found in the codebase.
+8. After writing the necessary tests, provide a clear, concise summary specifying:
+   - Which new tests were added.
+   - Which requirements or scenarios each new test addresses.
+   - Any ambiguities or contradictions encountered in the specification that limit test coverage or require clarification.
+
+Produce only the new, production-quality test code required for missing/under-tested behaviors and the summary, as outlined above.
 */
