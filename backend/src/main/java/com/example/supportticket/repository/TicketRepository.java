@@ -1,7 +1,6 @@
 package com.example.supportticket.repository;
 
 import com.example.supportticket.entity.Ticket;
-import com.example.supportticket.entity.Ticket.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +22,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             LOWER(t.description) LIKE LOWER(CONCAT('%', :q, '%'))
           )
         ORDER BY t.updatedAt DESC, t.id DESC
-    """)
+        """)
     List<Ticket> findByKeyword(
             @Param("q") String q
     );
@@ -45,16 +44,16 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             LOWER(t.description) LIKE LOWER(CONCAT('%', :q, '%'))
           )
         ORDER BY t.updatedAt DESC, t.id DESC
-    """)
+        """)
     List<Ticket> findByStatusAndKeyword(
-            @Param("status") Status status,
+            @Param("status") Ticket.Status status,
             @Param("q") String q
     );
 
     /**
      * Find all tickets with the given status, ordered by updatedAt DESC, then id DESC.
      */
-    List<Ticket> findByStatusOrderByUpdatedAtDescIdDesc(Status status);
+    List<Ticket> findByStatusOrderByUpdatedAtDescIdDesc(Ticket.Status status);
 
     /**
      * Find all tickets, newest first.
