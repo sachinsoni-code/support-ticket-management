@@ -25,3 +25,11 @@ Review of the first draft of `rules/api-standards.md`, `rules/java-springboot.md
 **Why it was wrong:** Those transitions are not in the assignment state machine. The assignment only allows `OPEN` → `IN_PROGRESS` → `RESOLVED` → `CLOSED`.
 
 **What we changed:** Removed those two transitions from the allowed list and listed them as invalid cases to test. Also dropped auth/delete/assignee-required test cases so they match the cleaned API and Spring Boot guidelines.
+
+## 4. Maven parent version issue during backend setup
+
+During the backend setup, the AI initially generated the Maven pom.xml with the Spring Boot parent version as `${spring-boot.version}`. Maven could not resolve the parent POM, and `mvn test` failed with a Non-resolvable parent POM error.
+
+The issue was identified by checking the Maven error and the actual pom.xml. The parent version was changed to the concrete Spring Boot version `3.2.5`, after which `mvn test` completed successfully.
+
+This was reviewed and corrected before continuing with backend implementation.
