@@ -1,0 +1,63 @@
+package com.example.supportticket.repository;
+
+import com.example.supportticket.entity.Ticket;
+import com.example.supportticket.entity.Ticket.Status;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+
+public interface TicketRepository extends JpaRepository<Ticket, Long> {
+
+    /**
+     * Find all tickets whose title or description contains the given keyword (case-insensitive),
+     * ordered by updatedAt DESC, then id DESC (newest first).
+     */
+    @Query("""
+        SELECT t
+        FROM Ticket t
+        WHERE
+          (:q IS NULL OR
+            LOWER(t.title) LIKE LOWER(CONCAT('%', :q, '%')) OR
+            LOWER(t.description) LIKE LOWER(CONCAT('%', :q, '%'))
+          )
+        ORDER BY t.updatedAt DESC, t.id DESC
+    """)
+    List<Ticket> findByKeyword(
+            @Param("q") String q
+    );
+
+    /**
+     * Find tickets filtered by status (if provided) and optional keyword on title/description (case-insensitive),
+     * ordered by updatedAt DESC, then id DESC.
+     * If both status and q are null, returns all tickets.
+     */
+    @Query("""
+        SELECT t
+        FROM Ticket t
+        WHERE
+          (:status IS NULL OR t.status = :status)
+          AND
+          (
+            :q IS NULL OR
+            LOWER(t.title) LIKE LOWER(CONCAT('%', :q, '%')) OR
+            LOWER(t.description) LIKE LOWER(CONCAT('%', :q, '%'))
+          )
+        ORDER BY t.updatedAt DESC, t.id DESC
+    """)
+    List<Ticket> findByStatusAndKeyword(
+            @Param("status") Status status,
+            @Param("q") String q
+    );
+
+    /**
+     * Find all tickets with the given status, ordered by updatedAt DESC, then id DESC.
+     */
+    List<Ticket> findByStatusOrderByUpdatedAtDescIdDesc(Status status);
+
+    /**
+     * Find all tickets, newest first.
+     */
+    List<Ticket> findAllByOrderByUpdatedAtDescIdDesc();
+}
